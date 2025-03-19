@@ -27,9 +27,9 @@ Add the following dependency to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>org.example</groupId>
-    <artifactId>jwt-validation</artifactId>
-    <version>1.0.0</version>
+  <groupId>io.github.tanmayshadow</groupId>
+  <artifactId>jwt-utils</artifactId>
+  <version>1.0.0</version>
 </dependency>
 ```
 ---
