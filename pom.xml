@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- Add Spring Boot Parent POM -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.2</version> <!-- Use the latest stable version -->
+        <relativePath/> <!-- Lookup parent from repository -->
+    </parent>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>JWT Utilities Library</name>
+            <url>https://maven.pkg.github.com/tanmayshadow/jwt-utils</url>
+        </repository>
+    </distributionManagement>
+
+<!--    <groupId>io.github.tanmayshadow</groupId>-->
+    <artifactId>jwt-utils</artifactId>
+<!--    <version>1.0.0</version>-->
+<!--    <packaging>jar</packaging>-->
+
+<!--    <name>JWT Utilities Library</name>-->
+<!--    <description>A library for creating, validating, and extracting claims from JWT tokens in Spring Boot applications. Includes a custom annotation for token validation at the controller level.</description>-->
+<!--    <url>https://github.com/tanmayshadow/jwt-utils</url>-->
+
+<!--    <licenses>-->
+<!--        <license>-->
+<!--            <name>MIT License</name>-->
+<!--            <url>https://opensource.org/licenses/MIT</url>-->
+<!--            <distribution>repo</distribution>-->
+<!--        </license>-->
+<!--    </licenses>-->
+
+<!--    <scm>-->
+<!--        <url>https://github.com/tanmayshadow/jwt-utils</url>-->
+<!--        <connection>scm:git:https://github.com/tanmayshadow/jwt-utils.git</connection>-->
+<!--        <developerConnection>scm:git:ssh://github.com:tanmayshadow/jwt-utils.git</developerConnection>-->
+<!--    </scm>-->
+
+
+
+    <properties>
+        <!-- Update Java version to 17 (required for Spring Boot 3.x) -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- JJWT Dependency -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+
+        <!-- Replace javax.servlet:servlet-api with jakarta.servlet:jakarta.servlet-api -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version> <!-- Use the latest version -->
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Boot AOP Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
