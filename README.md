@@ -38,7 +38,7 @@ Add the following dependency to your `pom.xml`:
 ### 1. JWT Utilities 
 
 #### 1.1 Create JWT Token
-Use the JwtUtil.createToken method to create a JWT token.
+Use the JwtUtil.generateJwtToken method to create a JWT token.
 
 ```java
 import util.io.github.JwtUtil;
@@ -46,10 +46,12 @@ import util.io.github.JwtUtil;
 public class JwtExample {
    public static void main(String[] args) {
       String secretKey = "my-secret-key";
-      String subject = "user123";
+      Map<String, Object> claims = new HashMap<>();
+      claims.put("username","name");
+      claims.put("role","admin");
       long expirationTime = 3600000; // 1 hour in milliseconds
 
-      String token = JwtUtil.createToken(secretKey, subject, expirationTime);
+      String token = JwtUtil.generateJwtToken(claims,secretKey,expiration);
       System.out.println("Generated Token: " + token);
    }
 }
@@ -138,7 +140,7 @@ Thrown when the JWT token is invalid.
 ## Example Workflow
 ### 1. Create a Token:
 
-* Use JwtUtil.createToken to generate a JWT token.
+* Use JwtUtil.generateJwtToken to generate a JWT token.
 
 ### 2. Validate a Token:
 
