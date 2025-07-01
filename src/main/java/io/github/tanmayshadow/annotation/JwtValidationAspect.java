@@ -11,7 +11,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 @Aspect
-@Component
 public class JwtValidationAspect {
 
     private final HttpServletRequest request;
@@ -20,11 +19,10 @@ public class JwtValidationAspect {
         this.request = request;
     }
 
-    @Before("@annotation(org.example.annotation.ValidateJwtToken)")
+    @Before("@annotation(io.github.tanmayshadow.annotation.ValidateJwtToken)")
     public void validateJwt(JoinPoint joinPoint) throws Throwable{
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         ValidateJwtToken annotation = signature.getMethod().getAnnotation(ValidateJwtToken.class);
-
         String token = request.getHeader(annotation.headerName());
         if (token == null || token.isEmpty()) {
             throw new MissingTokenException("Missing or invalid authorization header");

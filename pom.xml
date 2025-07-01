@@ -18,9 +18,9 @@
         </repository>
     </distributionManagement>
 
-<!--    <groupId>io.github.tanmayshadow</groupId>-->
+    <groupId>io.github.tanmayshadow</groupId>
     <artifactId>jwt-utils</artifactId>
-<!--    <version>1.0.0</version>-->
+    <version>1.9.13-local</version>
 <!--    <packaging>jar</packaging>-->
 
 <!--    <name>JWT Utilities Library</name>-->
