@@ -20,7 +20,7 @@
 
     <groupId>io.github.tanmayshadow</groupId>
     <artifactId>jwt-utils</artifactId>
-    <version>1.9.14-local</version>
+    <version>1.9.18-local</version>
 <!--    <packaging>jar</packaging>-->
 
 <!--    <name>JWT Utilities Library</name>-->

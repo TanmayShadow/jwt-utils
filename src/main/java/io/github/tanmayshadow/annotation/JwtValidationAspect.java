@@ -17,10 +17,12 @@ public class JwtValidationAspect {
 
     private final HttpServletRequest request;
     private final JwtUtilsProperties props;
+    private final JwtUtil jwtUtil;
 
     public JwtValidationAspect(HttpServletRequest request, JwtUtilsProperties props) {
         this.request = request;
         this.props = props;
+        this.jwtUtil = new JwtUtil(props);
     }
 
     @Before("@annotation(io.github.tanmayshadow.annotation.ValidateJwtToken)")
@@ -62,7 +64,7 @@ public class JwtValidationAspect {
             );
         }
         // Validate the token
-        if (!JwtUtil.validateToken(token, secretKey)) {
+        if (!jwtUtil.validateToken(token, secretKey)) {
             throw new InvalidTokenException(
                     "The JWT token provided is invalid or has failed signature verification. " +
                             "Ensure the token is correctly signed using the configured HMAC secret and has not expired or been tampered with."
