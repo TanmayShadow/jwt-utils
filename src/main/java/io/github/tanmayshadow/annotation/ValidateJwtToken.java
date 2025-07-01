@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD,ElementType.TYPE,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidateJwtToken {
-    String secretKey() default "tT88q8jpDWTpS7gnvwdV9fislqbAuNXI";
-    String headerName() default "X-Authorization";
+    String secretKey() default "";
+    String headerName() default "";
 }
