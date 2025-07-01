@@ -1,27 +1,21 @@
 # JWT Utilities Library
 
-A reusable library for JWT token creation, validation, and claim extraction in Spring Boot applications. It also provides a custom annotation @ValidateJwtToken to validate JWT tokens at the REST controller endpoint level.
+A reusable library for JWT token creation, validation, and claim extraction in Spring Boot applications.  
+It provides a custom annotation `@ValidateJwtToken` to validate JWT tokens at the REST controller endpoint level.
 
 ---
 
-## Features
+## 📌 Highlights (v1.1.0+)
 
-1. **JWT Utilities**:
-    - Create JWT tokens with a secret key.
-    - Validate JWT tokens with a secret key.
-    - Extract claims from a JWT token.
-
-2. **Annotation**:
-    - `@ValidateJwtToken`: A function-level annotation to validate JWT tokens before executing the actual logic of a REST controller endpoint.
-
-3. **Custom Exceptions**:
-    - `JwtValidationException`: Base exception for JWT validation errors.
-    - `MissingTokenException`: Thrown when the JWT token is missing or empty.
-    - `InvalidTokenException`: Thrown when the JWT token is invalid.
+- ✅ Spring Boot auto-configuration — no setup required
+- ✅ Inject `JwtUtil` via `@Autowired`
+- ✅ Reads `secretKey` and `headerName` from `application.properties`
+- ✅ Custom annotation `@ValidateJwtToken` with fallback config support
+- ✅ Descriptive exceptions for better debugging
 
 ---
 
-## Installation
+## 📦 Installation
 
 Add the following dependency to your `pom.xml`:
 
@@ -29,91 +23,59 @@ Add the following dependency to your `pom.xml`:
 <dependency>
   <groupId>io.github.tanmayshadow</groupId>
   <artifactId>jwt-utils</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
+
 ---
 
-## Usage
-### 1. JWT Utilities 
+## ⚙️ Configuration (application.properties)
 
-#### 1.1 Create JWT Token
-Use the JwtUtil.generateJwtToken method to create a JWT token.
+```properties
+tanmayshadow.jwtutils.secret-key=your-256bit-secret-key
+tanmayshadow.jwtutils.header-name=X-Authorization
+```
+
+---
+
+## 🚀 Usage (v1.1.0+)
+
+### 1. Inject JwtUtil via Spring
 
 ```java
-import util.io.github.JwtUtil;
-
+@RestController
 public class JwtExample {
-   public static void main(String[] args) {
-      String secretKey = "my-secret-key";
-      Map<String, Object> claims = new HashMap<>();
-      claims.put("username","name");
-      claims.put("role","admin");
-      long expirationTime = 3600000; // 1 hour in milliseconds
 
-      String token = JwtUtil.generateJwtToken(claims,secretKey,expiration);
-      System.out.println("Generated Token: " + token);
+   @Autowired
+   private JwtUtil jwtUtil;
+
+   @GetMapping("/generate")
+   public String generateToken() {
+      Map<String, Object> claims = Map.of("username", "john");
+      return jwtUtil.generateJwtToken(claims, 3600000); // 1 hour
+   }
+
+   @GetMapping("/verify")
+   public boolean validate(@RequestHeader("X-Authorization") String token) {
+      return jwtUtil.validateToken(token);
+   }
+
+   @GetMapping("/claim")
+   public Object extractClaim(@RequestHeader("X-Authorization") String token) {
+      return jwtUtil.getClaim(token, "username");
    }
 }
 ```
 
-#### 1.2 Validate JWT Token
-Use the JwtUtil.validateToken method to validate a JWT token.
+---
+
+### 2. Use Annotation for Auto Validation
 
 ```java
-import util.io.github.JwtUtil;
-
-public class JwtExample {
-   public static void main(String[] args) {
-      String secretKey = "my-secret-key";
-      String token = "your-jwt-token";
-
-      boolean isValid = JwtUtil.validateToken(token, secretKey);
-      System.out.println("Is Token Valid? " + isValid);
-   }
-}
-```
-
-#### 1.3 Extract Claims from Token
-Use the JwtUtil.getClaim and getAllClaims methods to extract claims from a JWT token.
-
-```java
-import io.jsonwebtoken.Claims;
-import util.io.github.JwtUtil;
-
-public class JwtExample {
-   public static void main(String[] args) {
-      String secretKey = "my-secret-key";
-      String token = "your-jwt-token";
-      String claimName = "your-claim-name";
-
-      Claims claims = JwtUtil.getAllClaims(token, secretKey);
-      System.out.println("Subject: " + claims.getSubject());
-      System.out.println("Expiration: " + claims.getExpiration());
-
-      Object claim = JwtUtil.getClaim(token, secretKey, claimName);
-      System.out.println("Claim Value: " + claim);
-   }
-}
-```
-
-### 2. Annotation
-#### 2.1 Function-Level Annotation (@ValidateJwtToken)
-Use the @ValidateJwtToken annotation to validate JWT tokens before executing the logic of a REST controller endpoint.
-
-```java
-import annotation.io.github.ValidateJwtToken;
-import exception.io.github.JwtValidationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 public class MyController {
 
-   @ValidateJwtToken(secretKey = "my-secret-key", headerName = "Authorization")
+   @ValidateJwtToken // Reads key and header from application.properties
    @GetMapping("/secure")
    public String secureEndpoint() {
       return "Access granted!";
@@ -126,68 +88,62 @@ public class MyController {
 }
 ```
 
-### 3. Custom Exceptions
-#### 3.1 JwtValidationException
-Base exception for all JWT validation errors.
-
-#### 3.2 MissingTokenException
-Thrown when the JWT token is missing or empty.
-
-#### 3.3 InvalidTokenException
-Thrown when the JWT token is invalid.
-
 ---
-## Example Workflow
-### 1. Create a Token:
 
-* Use JwtUtil.generateJwtToken to generate a JWT token.
+## ⚠️ Migration Notice (v1.0.0 → v1.1.0)
 
-### 2. Validate a Token:
+> Static methods like `JwtUtil.generateJwtToken(...)` have been deprecated.  
+> You should now inject `JwtUtil` as a Spring bean (`@Autowired`) and configure your secret key via `application.properties`.
 
-* Use JwtUtil.validateToken to validate the token.
-
-### 3. Use the Annotation:
-
-* Apply the @ValidateJwtToken annotation to your REST controller endpoints.
-
-### 4. Handle Exceptions:
-
-* Use @ExceptionHandler to handle JwtValidationException, MissingTokenException, and InvalidTokenException.
+> If you're using the annotation `@ValidateJwtToken`, you can now omit `secretKey` and `headerName` — it falls back to properties automatically.
 
 ---
 
-## Dependencies
-This library requires the following dependencies in your project:
+## 🧱 Dependencies
 
-### * Spring Boot AOP (for aspect-oriented programming):
+Ensure the following are in your project:
+
+### Spring AOP
 ```xml
 <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-aop</artifactId>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-aop</artifactId>
 </dependency>
 ```
-### * Servlet API (if using HttpServletRequest):
+
+### Servlet API
 ```xml
 <dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>6.0.0</version>
-    <scope>provided</scope>
+  <groupId>jakarta.servlet</groupId>
+  <artifactId>jakarta.servlet-api</artifactId>
+  <version>6.0.0</version>
+  <scope>provided</scope>
 </dependency>
 ```
-### * JJWT (for JWT validation):
+
+### JJWT
 ```xml
 <dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt</artifactId>
-    <version>0.12.6</version>
+  <groupId>io.jsonwebtoken</groupId>
+  <artifactId>jjwt</artifactId>
+  <version>0.12.6</version>
 </dependency>
 ```
----
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request.
 
 ---
 
-## Support
-For any questions or issues, please open an issue on the GitHub repository.
+## 📄 Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for version history and release notes.
+
+---
+
+## 🙌 Contributing
+
+Contributions are welcome! Please open an issue or pull request.
+
+---
+
+## 💬 Support
+
+For questions or issues, please open an issue on the [GitHub repository](https://github.com/tanmayshadow/jwt-utils).

@@ -20,12 +20,12 @@
 
     <groupId>io.github.tanmayshadow</groupId>
     <artifactId>jwt-utils</artifactId>
-    <version>1.9.18-local</version>
-<!--    <packaging>jar</packaging>-->
+    <version>1.1.0</version>
+    <packaging>jar</packaging>
 
-<!--    <name>JWT Utilities Library</name>-->
-<!--    <description>A library for creating, validating, and extracting claims from JWT tokens in Spring Boot applications. Includes a custom annotation for token validation at the controller level.</description>-->
-<!--    <url>https://github.com/tanmayshadow/jwt-utils</url>-->
+    <name>JWT Utilities Library</name>
+    <description>A library for creating, validating, and extracting claims from JWT tokens in Spring Boot applications. Includes a custom annotation for token validation at the controller level.</description>
+    <url>https://github.com/tanmayshadow/jwt-utils</url>
 
 <!--    <licenses>-->
 <!--        <license>-->
